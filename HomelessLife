@@ -1,0 +1,260 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Light V1",
+   LoadingTitle = "Đang tải Menu...",
+   LoadingSubtitle = "By BanhQuy2212014",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "LightV1Config",
+      FileName = "CustomMenu"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "",
+      RememberJoins = true
+   },
+   KeySystem = false
+})
+
+local MainTab = Window:CreateTab("Chức Năng Chính", 4483362458)
+
+local DefaultSpeed = 16
+MainTab:CreateSlider({
+   Name = "Speed",
+   Range = {1, 35},
+   Increment = 1,
+   Suffix = "",
+   CurrentValue = 16,
+   Flag = "SpeedSlider",
+   Callback = function(Value)
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         Player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+      end
+   end,
+})
+
+game:GetService("RunService").RenderStepped:Connect(function()
+   pcall(function()
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         local currentSliderVal = Rayfield.Flags.SpeedSlider.CurrentValue
+         
+         if humanoid.MoveDirection.Magnitude > 0 then
+            humanoid.WalkSpeed = currentSliderVal
+         else
+            humanoid.WalkSpeed = 16
+         end
+      end
+   end)
+end)
+
+_G.HitboxSize = 2
+_G.HitboxEnabled = false
+
+MainTab:CreateSlider({
+   Name = "Setting Hitbox",
+   Range = {1, 20},
+   Increment = 1,
+   Suffix = "",
+   CurrentValue = 2,
+   Flag = "HitboxSlider",
+   Callback = function(Value)
+      _G.HitboxSize = Value
+   end,
+})
+
+MainTab:CreateToggle({
+   Name = "Hitbox",
+   CurrentValue = false,
+   Flag = "HitboxToggle",
+   Callback = function(Value)
+      _G.HitboxEnabled = Value
+   end,
+})
+
+task.spawn(function()
+   while task.wait(0.5) do
+      if _G.HitboxEnabled then
+         for _, p in pairs(game.Players:GetPlayers()) do
+            if p ~= game.Players.LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+               pcall(function()
+                  local hrp = p.Character.HumanoidRootPart
+                  hrp.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+                  hrp.Transparency = 0.85
+                  hrp.BrickColor = BrickColor.new("White")
+                  hrp.Material = Enum.Material.SmoothPlastic
+                  hrp.CanCollide = false
+               end)
+            end
+         end
+      else
+         for _, p in pairs(game.Players:GetPlayers()) do
+            if p ~= game.Players.LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+               pcall(function()
+                  local hrp = p.Character.HumanoidRootPart
+                  hrp.Size = Vector3.new(2, 2, 1)
+                  hrp.Transparency = 1
+                  hrp.BrickColor = BrickColor.new("Medium stone grey")
+                  hrp.Material = Enum.Material.Plastic
+                  hrp.CanCollide = true
+               end)
+            end
+         end
+      end
+   end
+end)
+
+_G.ESPEnabled = false
+
+local function CreateESP(player)
+   if player == game.Players.LocalPlayer then return end
+   
+   local function SetupCharacter(char)
+      local head = char:WaitForChild("Head", 5)
+      if not head then return end
+      
+      if head:FindFirstChild("NameESP") then
+         head.NameESP:Destroy()
+      end
+      
+      local bgui = Instance.new("BillboardGui")
+      bgui.Name = "NameESP"
+      bgui.Adornee = head
+      bgui.Size = UDim2.new(0, 300, 0, 50)
+      bgui.StudsOffset = Vector3.new(0, 3, 0)
+      bgui.AlwaysOnTop = true
+      
+      local text = Instance.new("TextLabel")
+      text.Parent = bgui
+      text.BackgroundTransparency = 1
+      text.Size = UDim2.new(1, 0, 1, 0)
+      text.Text = player.Name
+      text.TextColor3 = Color3.fromRGB(0, 128, 255)
+      text.TextScaled = false
+      text.TextSize = 22
+      text.Font = Enum.Font.SourceSansBold
+      text.TextStrokeTransparency = 0
+      text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+      text.Visible = _G.ESPEnabled
+      
+      bgui.Parent = head
+   end
+   
+   if player.Character then
+      SetupCharacter(player.Character)
+   end
+   player.CharacterAdded:Connect(SetupCharacter)
+end
+
+for _, p in pairs(game.Players:GetPlayers()) do
+   CreateESP(p)
+end
+game.Players.PlayerAdded:Connect(CreateESP)
+
+MainTab:CreateToggle({
+   Name = "Esp",
+   CurrentValue = false,
+   Flag = "ESPToggle",
+   Callback = function(Value)
+      _G.ESPEnabled = Value
+      for _, p in pairs(game.Players:GetPlayers()) do
+         if p.Character and p.Character:FindFirstChild("Head") and p.Character.Head:FindFirstChild("NameESP") then
+            p.Character.Head.NameESP.TextLabel.Visible = Value
+         end
+      end
+   end,
+})
+
+local OriginalMaterials = {}
+local OriginalLighting = {
+   GlobalShadows = game.Lighting.GlobalShadows,
+   Resolution = settings().Rendering.QualityLevel
+}
+
+local function ApplyAntiLag()
+   for _, obj in pairs(workspace:GetDescendants()) do
+      if obj:IsA("BasePart") and not obj:IsA("Terrain") then
+         if not OriginalMaterials[obj] then
+            OriginalMaterials[obj] = {Material = obj.Material, Reflectance = obj.Reflectance}
+         end
+         obj.Material = Enum.Material.SmoothPlastic
+         obj.Reflectance = 0
+      elseif obj:IsA("Decal") or obj:IsA("Texture") then
+         if not OriginalMaterials[obj] then
+            OriginalMaterials[obj] = {Transparency = obj.Transparency}
+         end
+         obj.Transparency = 1
+      end
+   end
+   
+   if workspace:FindFirstChildOfClass("Terrain") then
+      local terrain = workspace:FindFirstChildOfClass("Terrain")
+      if not OriginalMaterials[terrain] then
+         OriginalMaterials[terrain] = {Decoration = terrain.Decoration}
+      end
+      terrain.Decoration = false
+   end
+   
+   game.Lighting.GlobalShadows = false
+   for _, effect in pairs(game.Lighting:GetDescendants()) do
+      if effect:IsA("PostEffect") or effect:IsA("BloomEffect") or effect:IsA("BlurEffect") or effect:IsA("SunRaysEffect") or effect:IsA("ColorCorrectionEffect") then
+         if not OriginalMaterials[effect] then
+            OriginalMaterials[effect] = {Enabled = effect.Enabled}
+         end
+         effect.Enabled = false
+      end
+   end
+end
+
+local function RestoreGraphics()
+   for obj, properties in pairs(OriginalMaterials) do
+      if obj and obj.Parent then
+         pcall(function()
+            for prop, value in pairs(properties) do
+               obj[prop] = value
+            end
+         end)
+      end
+   end
+   OriginalMaterials = {}
+   game.Lighting.GlobalShadows = OriginalLighting.GlobalShadows
+end
+
+workspace.DescendantAdded:Connect(function(obj)
+   if Rayfield.Flags.AntiLagToggle and Rayfield.Flags.AntiLagToggle.CurrentValue then
+      task.wait()
+      pcall(function()
+         if obj:IsA("BasePart") and not obj:IsA("Terrain") then
+            if not OriginalMaterials[obj] then OriginalMaterials[obj] = {Material = obj.Material, Reflectance = obj.Reflectance} end
+            obj.Material = Enum.Material.SmoothPlastic
+            obj.Reflectance = 0
+         elseif obj:IsA("Decal") or obj:IsA("Texture") then
+            if not OriginalMaterials[obj] then OriginalMaterials[obj] = {Transparency = obj.Transparency} end
+            obj.Transparency = 1
+         end
+      end)
+   end
+end)
+
+MainTab:CreateToggle({
+   Name = "Giảm Lag",
+   CurrentValue = false,
+   Flag = "AntiLagToggle",
+   Callback = function(Value)
+      if Value then
+         ApplyAntiLag()
+      else
+         RestoreGraphics()
+      end
+   end,
+})
+
+Rayfield:Notify({
+   Title = "Light V1",
+   Content = ".!",
+   Duration = 5,
+   Image = 4483362458,
+})
