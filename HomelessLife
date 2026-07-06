@@ -1,9 +1,9 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Light V1",
-   LoadingTitle = "Đang tải Menu...",
-   LoadingSubtitle = "By BanhQuy2212014",
+   Name = "Homeless Life💅",
+   LoadingTitle = "Homeless Life",
+   LoadingSubtitle = "By ManhKienBG YTB",
    ConfigurationSaving = {
       Enabled = true,
       FolderName = "LightV1Config",
@@ -253,8 +253,8 @@ MainTab:CreateToggle({
 })
 
 Rayfield:Notify({
-   Title = "Light V1",
-   Content = ".!",
+   Title = "@manhkienbghub",
+   Content = ".!.",
    Duration = 5,
    Image = 4483362458,
 })
