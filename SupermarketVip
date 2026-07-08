@@ -1,0 +1,111 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local Window = Rayfield:CreateWindow({
+    Name = "Supermarket Vip",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "By ManhKienBG YTB",
+    ConfigurationSaving = { Enabled = true, FileName = "MobileConfig" }
+})
+
+local Tab = Window:CreateTab("Main", nil)
+
+Tab:CreateButton({
+    Name = "Speed Hack",
+    Callback = function()
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.WalkSpeed = 17.5
+        end
+    end,
+})
+
+_G.AutoAttack = false
+Tab:CreateToggle({
+    Name = "Auto Spam",
+    CurrentValue = false,
+    Callback = function(Value)
+        _G.AutoAttack = Value
+        while _G.AutoAttack do
+            local tool = LocalPlayer.Character:FindFirstChildOfClass("Tool")
+            if tool then
+                tool:Activate()
+            end
+            task.wait(0.1)
+        end
+    end,
+})
+
+_G.HitboxEnabled = false
+Tab:CreateToggle({
+    Name = "On / Off Hitbox",
+    CurrentValue = false,
+    Callback = function(Value)
+        _G.HitboxEnabled = Value
+    end,
+})
+
+Tab:CreateSlider({
+    Name = "Hitbox ",
+    Range = {1, 20},
+    Increment = 1,
+    Suffix = "Size",
+    CurrentValue = 1,
+    Flag = "HitboxSlider",
+    Callback = function(Value)
+        _G.HitboxSize = Value
+    end,
+})
+
+_G.ESPEnabled = false
+Tab:CreateToggle({
+    Name = "ESP",
+    CurrentValue = false,
+    Callback = function(Value)
+        _G.ESPEnabled = Value
+    end,
+})
+
+local espObjects = {}
+
+RunService.RenderStepped:Connect(function()
+    for _, v in pairs(Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            if _G.HitboxEnabled and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
+                v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize or 1, _G.HitboxSize or 1, _G.HitboxSize or 1)
+                v.Character.HumanoidRootPart.Transparency = 0.8
+                v.Character.HumanoidRootPart.CanCollide = false
+            end
+
+            if _G.ESPEnabled and v.Character:FindFirstChild("Humanoid") then
+                if not espObjects[v.Name] then
+                    local text = Drawing.new("Text")
+                    text.Center = true
+                    text.Outline = true
+                    text.Color = Color3.fromRGB(255, 255, 255)
+                    text.Size = 13
+                    espObjects[v.Name] = text
+                end
+                
+                local pos, onScreen = workspace.CurrentCamera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
+                if onScreen then
+                    espObjects[v.Name].Position = Vector2.new(pos.X, pos.Y)
+                    espObjects[v.Name].Text = v.Name .. " | " .. math.floor(v.Character.Humanoid.Health)
+                    espObjects[v.Name].Visible = true
+                else
+                    espObjects[v.Name].Visible = false
+                end
+            elseif espObjects[v.Name] then
+                espObjects[v.Name].Visible = false
+            end
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    if espObjects[player.Name] then
+        espObjects[player.Name]:Remove()
+        espObjects[player.Name] = nil
+    end
+end)
