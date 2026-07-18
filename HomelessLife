@@ -19,7 +19,29 @@ local Window = Rayfield:CreateWindow({
 
 local MainTab = Window:CreateTab("Chức Năng Chính", 4483362458)
 
-local DefaultSpeed = 16
+-- ========================================================
+-- PHẦN CẬP NHẬT: THÊM CÔNG TẮC BẬT/TẮT SPEED
+-- ========================================================
+_G.SpeedEnabled = false
+
+MainTab:CreateToggle({
+   Name = "Bật Speed",
+   CurrentValue = false,
+   Flag = "SpeedToggle",
+   Callback = function(Value)
+      _G.SpeedEnabled = Value
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         if Value then
+            humanoid.WalkSpeed = Rayfield.Flags.SpeedSlider.CurrentValue
+         else
+            humanoid.WalkSpeed = 16 -- Trả về tốc độ mặc định khi tắt công tắc
+         end
+      end
+   end,
+})
+
 MainTab:CreateSlider({
    Name = "Speed",
    Range = {1, 35},
@@ -28,9 +50,11 @@ MainTab:CreateSlider({
    CurrentValue = 16,
    Flag = "SpeedSlider",
    Callback = function(Value)
-      local Player = game.Players.LocalPlayer
-      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
-         Player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+      if _G.SpeedEnabled then
+         local Player = game.Players.LocalPlayer
+         if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+            Player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+         end
       end
    end,
 })
@@ -40,12 +64,19 @@ game:GetService("RunService").RenderStepped:Connect(function()
       local Player = game.Players.LocalPlayer
       if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
          local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
-         local currentSliderVal = Rayfield.Flags.SpeedSlider.CurrentValue
          
-         if humanoid.MoveDirection.Magnitude > 0 then
-            humanoid.WalkSpeed = currentSliderVal
+         if _G.SpeedEnabled then
+            local currentSliderVal = Rayfield.Flags.SpeedSlider.CurrentValue
+            if humanoid.MoveDirection.Magnitude > 0 then
+               humanoid.WalkSpeed = currentSliderVal
+            else
+               humanoid.WalkSpeed = 16
+            end
          else
-            humanoid.WalkSpeed = 16
+            -- Nếu tắt công tắc, luôn giữ tốc độ gốc không cho vòng lặp ghi đè
+            if humanoid.WalkSpeed ~= 16 then
+               humanoid.WalkSpeed = 16
+            end
          end
       end
    end)
@@ -54,9 +85,12 @@ end)
 _G.HitboxSize = 2
 _G.HitboxEnabled = false
 
+-- ========================================================
+-- PHẦN CẬP NHẬT: HITBOX LÊN TỐI ĐA 25
+-- ========================================================
 MainTab:CreateSlider({
    Name = "Setting Hitbox",
-   Range = {1, 20},
+   Range = {1, 25}, -- Đã nâng từ 20 lên 25
    Increment = 1,
    Suffix = "",
    CurrentValue = 2,
@@ -114,7 +148,8 @@ local function CreateESP(player)
    
    local function SetupCharacter(char)
       local head = char:WaitForChild("Head", 5)
-      if not head then return end
+      local humanoid = char:WaitForChild("Humanoid", 5)
+      if not head or not humanoid then return end
       
       if head:FindFirstChild("NameESP") then
          head.NameESP:Destroy()
@@ -123,24 +158,37 @@ local function CreateESP(player)
       local bgui = Instance.new("BillboardGui")
       bgui.Name = "NameESP"
       bgui.Adornee = head
-      bgui.Size = UDim2.new(0, 300, 0, 50)
-      bgui.StudsOffset = Vector3.new(0, 3, 0)
+      bgui.Size = UDim2.new(0, 200, 0, 40)
+      bgui.StudsOffset = Vector3.new(0, 2.5, 0)
       bgui.AlwaysOnTop = true
       
       local text = Instance.new("TextLabel")
       text.Parent = bgui
       text.BackgroundTransparency = 1
       text.Size = UDim2.new(1, 0, 1, 0)
-      text.Text = player.Name
-      text.TextColor3 = Color3.fromRGB(0, 128, 255)
-      text.TextScaled = false
-      text.TextSize = 22
-      text.Font = Enum.Font.SourceSansBold
+      
+      text.TextColor3 = Color3.fromRGB(0, 180, 255)
+      text.TextSize = 14 
+      text.Font = Enum.Font.GothamBold
       text.TextStrokeTransparency = 0
       text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
       text.Visible = _G.ESPEnabled
       
+      local function UpdateText()
+         if humanoid and humanoid.Parent then
+            local health = math.floor(humanoid.Health)
+            text.Text = player.Name .. " [" .. health .. " HP]"
+         end
+      end
+      
+      UpdateText()
+      local conn = humanoid.HealthChanged:Connect(UpdateText)
+      
       bgui.Parent = head
+      
+      char.Destroying:Connect(function()
+         if conn then conn:Disconnect() end
+      end)
    end
    
    if player.Character then
@@ -251,6 +299,75 @@ MainTab:CreateToggle({
       end
    end,
 })
+
+_G.InfJumpEnabled = false
+_G.JumpPowerEnabled = false
+
+MainTab:CreateToggle({
+   Name = "Jumppower",
+   CurrentValue = false,
+   Flag = "JumpPowerToggle",
+   Callback = function(Value)
+      _G.JumpPowerEnabled = Value
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         humanoid.UseJumpPower = true
+         if Value then
+            humanoid.JumpPower = 60
+         else
+            humanoid.JumpPower = 50
+         end
+      end
+   end,
+})
+
+MainTab:CreateToggle({
+   Name = "InfJump",
+   CurrentValue = false,
+   Flag = "InfJumpToggle",
+   Callback = function(Value)
+      _G.InfJumpEnabled = Value
+   end,
+})
+
+game:GetService("UserInputService").JumpRequest:Connect(function()
+   if _G.InfJumpEnabled then
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+      end
+   end
+end)
+
+task.spawn(function()
+   while task.wait(0.2) do
+      if _G.JumpPowerEnabled then
+         pcall(function()
+            local Player = game.Players.LocalPlayer
+            if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+               local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+               humanoid.UseJumpPower = true
+               humanoid.JumpPower = 60
+            end
+         end)
+      end
+   end
+end)
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+   local humanoid = char:WaitForChild("Humanoid", 5)
+   if humanoid then
+      task.wait(0.5)
+      if _G.JumpPowerEnabled then
+         humanoid.UseJumpPower = true
+         humanoid.JumpPower = 60
+      end
+      if _G.SpeedEnabled and Rayfield.Flags.SpeedSlider then
+         humanoid.WalkSpeed = Rayfield.Flags.SpeedSlider.CurrentValue
+      end
+   end
+end)
 
 Rayfield:Notify({
    Title = "@manhkienbghub",
