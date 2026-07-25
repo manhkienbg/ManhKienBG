@@ -1,23 +1,13 @@
-local _0x4F2A = function(data, key)
-    local res = {}
-    for i = 1, #data do
-        res[i] = string.char(bit32.bxor(data[i], key))
-    end
-    return table.concat(res)
-end
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local _0x7B = 42
-
-local _0x1 = loadstring(game:HttpGet(_0x4F2A({74,95,95,82,95,25,25,89,73,88,73,87,89,64,73,77,71,87,25,88,73,83,81,77,73,76,70,22,72,67,107,112,67,113,115,71,107,121,113,123,73,120,115,113,111,107,117,115,67,105,107,117,113}, _0x7B)))()
-
-local _0x2 = _0x1:_0x4F2A({105,90,77,103,92,77,61,73,68,70,103,111}, _0x7B)({
-   Name = _0x4F2A({34,69,71,77,78,77,89,89,8,10,73,78,77,218,181,152,189}, _0x7B),
-   LoadingTitle = _0x4F2A({34,69,71,77,78,77,89,89,8,10,73,78,77}, _0x7B),
-   LoadingSubtitle = _0x4F2A({40,83,8,32,77,76,74,41,73,77,76,40,45,8,57,54,40}, _0x7B),
+local Window = Rayfield:CreateWindow({
+   Name = "Scrappy Life  ",
+   LoadingTitle = "Scrappy Life",
+   LoadingSubtitle = "By ManhKienBG YTB",
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = _0x4F2A({38,73,71,74,94,60,21,41,77,76,76,73,71}, _0x7B),
-      FileName = _0x4F2A({41,93,89,94,77,71,47,77,76,93}, _0x7B)
+      FolderName = "LightV1Config",
+      FileName = "CustomMenu"
    },
    Discord = {
       Enabled = false,
@@ -27,114 +17,116 @@ local _0x2 = _0x1:_0x4F2A({105,90,77,103,92,77,61,73,68,70,103,111}, _0x7B)({
    KeySystem = false
 })
 
-local _0x3 = _0x2:_0x4F2A({105,90,77,103,92,77,62,107,74}, _0x7B)(_0x4F2A({41,74,239,217,73,8,52,74,89,78,79,8,41,74,235,207,78,74}, _0x7B), 4483362458)
+local MainTab = Window:CreateTab("Chức Năng Chính", 4483362458)
 
-_G[_0x4F2A({57,90,77,77,76,47,76,73,74,76,77,76}, _0x7B)] = false
+_G.SpeedEnabled = false
 
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({40,239,215,94,8,57,88,77,77,76}, _0x7B),
+MainTab:CreateToggle({
+   Name = "Bật Speed",
    CurrentValue = false,
-   Flag = _0x4F2A({57,88,77,77,76,54,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({57,90,77,77,76,47,76,73,74,76,77,76}, _0x7B)] = _0x4
-      local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-      if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] then
-         local _0x6 = _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B))
-         if _0x6 then
-            _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = _0x4 and _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({57,88,77,77,76,57,78,73,76,77,88}, _0x7B)][_0x4F2A({39,93,88,88,77,76,84,60,73,76,93,77}, _0x7B)] or 16
+   Flag = "SpeedToggle",
+   Callback = function(Value)
+      _G.SpeedEnabled = Value
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         if Value then
+            humanoid.WalkSpeed = Rayfield.Flags.SpeedSlider.CurrentValue
+         else
+            humanoid.WalkSpeed = 16
          end
       end
    end,
 })
 
-_0x3:_0x4F2A({105,90,77,103,92,77,57,78,73,76,77,88}, _0x7B)({
-   Name = _0x4F2A({57,88,77,77,76}, _0x7B),
+MainTab:CreateSlider({
+   Name = "Speed",
    Range = {16, 26},
    Increment = 1,
    Suffix = "",
    CurrentValue = 16,
-   Flag = _0x4F2A({57,88,77,77,76,57,78,73,76,77,88}, _0x7B),
-   Callback = function(_0x4)
-      if _G[_0x4F2A({57,90,77,77,76,47,76,73,74,76,77,76}, _0x7B)] then
-         local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-         if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] then
-            local _0x6 = _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B))
-            if _0x6 then _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = _0x4 end
+   Flag = "SpeedSlider",
+   Callback = function(Value)
+      if _G.SpeedEnabled then
+         local Player = game.Players.LocalPlayer
+         if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+            Player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
          end
       end
    end,
 })
 
-game:_0x4F2A({45,77,84,57,77,88,88,73,75,77}, _0x7B)(_0x4F2A({56,87,76,57,77,88,88,73,75,77}, _0x7B))[_0x4F2A({50,77,76,76,77,88,57,84,77,82,82,77,70}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(function()
+game:GetService("RunService").RenderStepped:Connect(function()
    pcall(function()
-      local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-      if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] then
-         local _0x6 = _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B))
-         if _0x6 then
-            if _G[_0x4F2A({57,90,77,77,76,47,76,73,74,76,77,76}, _0x7B)] then
-               if _0x6[_0x4F2A({47,77,94,77,36,73,88,77,73,86,73,77,76}, _0x7B)][_0x4F2A({47,73,79,76,73,86,87,76,77}, _0x7B)] > 0 then
-                  _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({57,88,77,77,76,57,78,73,76,77,88}, _0x7B)][_0x4F2A({39,93,88,88,77,76,84,60,73,76,93,77}, _0x7B)]
-               else
-                  _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = 16
-               end
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         
+         if _G.SpeedEnabled then
+            local currentSliderVal = Rayfield.Flags.SpeedSlider.CurrentValue
+            if humanoid.MoveDirection.Magnitude > 0 then
+               humanoid.WalkSpeed = currentSliderVal
             else
-               if _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] ~= 16 then _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = 16 end
+               humanoid.WalkSpeed = 16
+            end
+         else
+            if humanoid.WalkSpeed ~= 16 then
+               humanoid.WalkSpeed = 16
             end
          end
       end
    end)
 end)
 
-_G[_0x4F2A({42,73,86,74,77,88,58,73,122,77}, _0x7B)] = 2
-_G[_0x4F2A({42,73,86,74,77,88,47,76,73,74,76,77,76}, _0x7B)] = false
+_G.HitboxSize = 2
+_G.HitboxEnabled = false
 
-_0x3:_0x4F2A({105,90,77,103,92,77,57,78,73,76,77,88}, _0x7B)({
-   Name = _0x4F2A({57,77,84,84,73,76,79,8,42,73,86,74,77,88}, _0x7B),
+MainTab:CreateSlider({
+   Name = "Setting Hitbox",
    Range = {1, 28},
    Increment = 1,
    Suffix = "",
    CurrentValue = 2,
-   Flag = _0x4F2A({42,73,86,74,77,88,57,78,73,76,77,88}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({42,73,86,74,77,88,58,73,122,77}, _0x7B)] = _0x4
+   Flag = "HitboxSlider",
+   Callback = function(Value)
+      _G.HitboxSize = Value
    end,
 })
 
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({42,73,86,74,77,88}, _0x7B),
+MainTab:CreateToggle({
+   Name = "Hitbox",
    CurrentValue = false,
-   Flag = _0x4F2A({42,73,86,74,77,88,84,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({42,73,86,74,77,88,47,76,73,74,76,77,76}, _0x7B)] = _0x4
+   Flag = "HitboxToggle",
+   Callback = function(Value)
+      _G.HitboxEnabled = Value
    end,
 })
 
-task[_0x4F2A({89,88,73,93,76}, _0x7B)](function()
-   while task[_0x4F2A({89,73,73,84}, _0x7B)](0.5) do
-      if _G[_0x4F2A({42,73,86,74,77,88,47,76,73,74,76,77,76}, _0x7B)] then
-         for _, _0x7 in pairs(game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)]:_0x4F2A({45,77,84,40,76,73,83,77,88,89}, _0x7B)()) do
-            if _0x7 ~= game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)] and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76,56,77,77,84,58,73,88,84}, _0x7B)) then
+task.spawn(function()
+   while task.wait(0.5) do
+      if _G.HitboxEnabled then
+         for _, p in pairs(game.Players:GetPlayers()) do
+            if p ~= game.Players.LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
                pcall(function()
-                  local _0x8 = _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76,56,77,77,84,58,73,88,84}, _0x7B))
-                  local _0x9 = _G[_0x4F2A({42,73,86,74,77,88,58,73,122,77}, _0x7B)]
-                  _0x8[_0x4F2A({57,73,122,77}, _0x7B)] = Vector3.new(_0x9, _0x9, _0x9)
-                  _0x8[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 0.85
-                  _0x8[_0x4F2A({34,88,73,75,73,41,77,78,77,88}, _0x7B)] = BrickColor.new(_0x4F2A({55,74,73,84,77}, _0x7B))
-                  _0x8[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)] = Enum.Material.SmoothPlastic
-                  _0x8[_0x4F2A({35,73,76,35,77,76,76,73,76,77}, _0x7B)] = false
+                  local hrp = p.Character.HumanoidRootPart
+                  hrp.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+                  hrp.Transparency = 0.85
+                  hrp.BrickColor = BrickColor.new("White")
+                  hrp.Material = Enum.Material.SmoothPlastic
+                  hrp.CanCollide = false
                end)
             end
          end
       else
-         for _, _0x7 in pairs(game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)]:_0x4F2A({45,77,84,40,76,73,83,77,88,89}, _0x7B)()) do
-            if _0x7 ~= game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)] and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76,56,77,77,84,58,73,88,84}, _0x7B)) then
+         for _, p in pairs(game.Players:GetPlayers()) do
+            if p ~= game.Players.LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
                pcall(function()
-                  local _0x8 = _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76,56,77,77,84,58,73,88,84}, _0x7B))
-                  _0x8[_0x4F2A({57,73,122,77}, _0x7B)] = Vector3.new(2, 2, 1)
-                  _0x8[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 1
-                  _0x8[_0x4F2A({34,88,73,75,73,41,77,78,77,88}, _0x7B)] = BrickColor.new(_0x4F2A({47,77,70,73,87,103,8,89,84,77,76,77,8,71,88,77,83}, _0x7B))
-                  _0x8[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)] = Enum.Material.Plastic
-                  _0x8[_0x4F2A({35,73,76,35,77,76,76,73,76,77}, _0x7B)] = true
+                  local hrp = p.Character.HumanoidRootPart
+                  hrp.Size = Vector3.new(2, 2, 1)
+                  hrp.Transparency = 1
+                  hrp.BrickColor = BrickColor.new("Medium stone grey")
+                  hrp.Material = Enum.Material.Plastic
+                  hrp.CanCollide = true
                end)
             end
          end
@@ -142,222 +134,237 @@ task[_0x4F2A({89,88,73,93,76}, _0x7B)](function()
    end
 end)
 
-_G[_0x4F2A({47,57,58,47,76,73,74,76,77,76}, _0x7B)] = false
+_G.ESPEnabled = false
 
-local function _0x0A(_0x7)
-   if _0x7 == game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)] then return end
-   local function _0x0B(_0x0C)
-      local _0x0D = _0x0C:_0x4F2A({53,73,73,84,38,77,88,35,72,73,76,76}, _0x7B)(_0x4F2A({34,73,73,70}, _0x7B), 5)
-      local _0x0E = _0x0C:_0x4F2A({53,73,73,84,38,77,88,35,72,73,76,76}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B), 5)
-      if not _0x0D or not _0x0E then return end
+local function CreateESP(player)
+   if player == game.Players.LocalPlayer then return end
+   
+   local function SetupCharacter(char)
+      local head = char:WaitForChild("Head", 5)
+      local humanoid = char:WaitForChild("Humanoid", 5)
+      if not head or not humanoid then return end
       
-      if _0x0D:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({52,73,77,77,47,57,58}, _0x7B)) then
-         _0x0D:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({52,73,77,77,47,57,58}, _0x7B)):_0x4F2A({46,77,89,84,88,77,83}, _0x7B)()
+      if head:FindFirstChild("NameESP") then
+         head.NameESP:Destroy()
       end
       
-      local _0x0F = Instance.new(_0x4F2A({34,73,76,76,74,77,73,88,76,45,89,73}, _0x7B))
-      _0x0F[_0x4F2A({52,73,77,77}, _0x7B)] = _0x4F2A({52,73,77,77,47,57,58}, _0x7B)
-      _0x0F[_0x4F2A({33,76,77,88,76,77,77}, _0x7B)] = _0x0D
-      _0x0F[_0x4F2A({57,73,122,77}, _0x7B)] = UDim2.new(0, 200, 0, 40)
-      _0x0F[_0x4F2A({57,84,93,76,89,53,78,72,89,77,84}, _0x7B)] = Vector3.new(0, 2.5, 0)
-      _0x0F[_0x4F2A({33,76,89,73,83,89,57,76,54,77,88}, _0x7B)] = true
+      local bgui = Instance.new("BillboardGui")
+      bgui.Name = "NameESP"
+      bgui.Adornee = head
+      bgui.Size = UDim2.new(0, 200, 0, 40)
+      bgui.StudsOffset = Vector3.new(0, 2.5, 0)
+      bgui.AlwaysOnTop = true
       
-      local _0x10 = Instance.new(_0x4F2A({54,73,80,84,44,73,74,77,76}, _0x7B))
-      _0x10[_0x4F2A({58,73,88,77,76,84}, _0x7B)] = _0x0F
-      _0x10[_0x4F2A({34,73,75,77,73,88,77,93,76,80,54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 1
-      _0x10[_0x4F2A({57,73,122,77}, _0x7B)] = UDim2.new(1, 0, 1, 0)
-      _0x10[_0x4F2A({54,73,88,84,49,77,76,79,88,105}, _0x7B)] = Color3.fromRGB(0, 180, 255)
-      _0x10[_0x4F2A({54,73,88,84,57,73,122,77}, _0x7B)] = 14
-      _0x10[_0x4F2A({44,77,76,84}, _0x7B)] = Enum.Font.GothamBold
-      _0x10[_0x4F2A({54,73,88,84,59,84,88,77,75,77,54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 0
-      _0x10[_0x4F2A({54,73,88,84,59,84,88,77,75,77,49,77,76,79,88,105}, _0x7B)] = Color3.fromRGB(0, 0, 0)
-      _0x10[_0x4F2A({58,73,89,73,74,76,77}, _0x7B)] = _G[_0x4F2A({47,57,58,47,76,73,74,76,77,76}, _0x7B)]
+      local text = Instance.new("TextLabel")
+      text.Parent = bgui
+      text.BackgroundTransparency = 1
+      text.Size = UDim2.new(1, 0, 1, 0)
       
-      local function _0x11()
-         if _0x0E and _0x0E[_0x4F2A({58,73,88,77,76,84}, _0x7B)] then
-            local _0x12 = math.floor(_0x0E[_0x4F2A({40,73,73,76,86,72}, _0x7B)])
-            _0x10[_0x4F2A({54,73,88,84}, _0x7B)] = _0x7[_0x4F2A({52,73,77,77}, _0x7B)] .. _0x4F2A({8,119}, _0x7B) .. _0x12 .. _0x4F2A({8,42,58,117}, _0x7B)
+      text.TextColor3 = Color3.fromRGB(0, 180, 255)
+      text.TextSize = 14 
+      text.Font = Enum.Font.GothamBold
+      text.TextStrokeTransparency = 0
+      text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+      text.Visible = _G.ESPEnabled
+      
+      local function UpdateText()
+         if humanoid and humanoid.Parent then
+            local health = math.floor(humanoid.Health)
+            text.Text = player.Name .. " [" .. health .. " HP]"
          end
       end
       
-      _0x11()
-      local _0x13 = _0x0E[_0x4F2A({40,73,73,76,86,72,33,76,73,76,79,77,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(_0x11)
+      UpdateText()
+      local conn = humanoid.HealthChanged:Connect(UpdateText)
       
-      _0x0F[_0x4F2A({58,73,88,77,76,84}, _0x7B)] = _0x0D
-      _0x0C[_0x4F2A({44,77,89,84,88,77,83,73,76,79}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(function()
-         if _0x13 then _0x13:_0x4F2A({46,73,89,75,77,76,76,77,75,84}, _0x7B)() end
+      bgui.Parent = head
+      
+      char.Destroying:Connect(function()
+         if conn then conn:Disconnect() end
       end)
    end
    
-   if _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] then _0x0B(_0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]) end
-   _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88,33,76,76,77,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(_0x0B)
+   if player.Character then
+      SetupCharacter(player.Character)
+   end
+   player.CharacterAdded:Connect(SetupCharacter)
 end
 
-for _, _0x7 in pairs(game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)]:_0x4F2A({45,77,84,40,76,73,83,77,88,89}, _0x7B)()) do _0x0A(_0x7) end
-game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({56,76,73,83,77,88,33,76,76,77,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(_0x0A)
+for _, p in pairs(game.Players:GetPlayers()) do
+   CreateESP(p)
+end
+game.Players.PlayerAdded:Connect(CreateESP)
 
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({39,89,88}, _0x7B),
+MainTab:CreateToggle({
+   Name = "Esp",
    CurrentValue = false,
-   Flag = _0x4F2A({39,57,48,54,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({47,57,58,47,76,73,74,76,77,76}, _0x7B)] = _0x4
-      for _, _0x7 in pairs(game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)]:_0x4F2A({45,77,84,40,76,73,83,77,88,89}, _0x7B)()) do
-         if _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({34,73,73,70}, _0x7B)) and _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)][_0x4F2A({34,73,73,70}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83}, _0x7B)(_0x4F2A({52,73,77,77,47,57,58}, _0x7B)) then
-            _0x7[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)][_0x4F2A({34,73,73,70}, _0x7B)][_0x4F2A({52,73,77,77,47,57,58}, _0x7B)][_0x4F2A({54,73,88,84,44,73,74,77,76}, _0x7B)][_0x4F2A({58,73,89,73,74,76,77}, _0x7B)] = _0x4
+   Flag = "ESPToggle",
+   Callback = function(Value)
+      _G.ESPEnabled = Value
+      for _, p in pairs(game.Players:GetPlayers()) do
+         if p.Character and p.Character:FindFirstChild("Head") and p.Character.Head:FindFirstChild("NameESP") then
+            p.Character.Head.NameESP.TextLabel.Visible = Value
          end
       end
    end,
 })
 
-local _0x14 = {}
-local _0x15 = {
-   GlobalShadows = game[_0x4F2A({46,73,79,74,76,73,76,79}, _0x7B)][_0x4F2A({39,78,77,74,73,76,57,74,73,76,87,85,89}, _0x7B)],
-   Resolution = settings()[_0x4F2A({56,77,76,76,77,88,73,76,79}, _0x7B)][_0x4F2A({43,93,73,78,73,86,81,38,77,88,77,76}, _0x7B)]
+local OriginalMaterials = {}
+local OriginalLighting = {
+   GlobalShadows = game.Lighting.GlobalShadows,
+   Resolution = settings().Rendering.QualityLevel
 }
 
-local function _0x16()
-   for _, _0x17 in pairs(workspace:_0x4F2A({45,77,84,36,77,89,75,77,76,76,73,76,86,89}, _0x7B)()) do
-      if _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({34,73,89,77,50,73,88,86}, _0x7B)) and not _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({54,77,88,88,73,73,76}, _0x7B)) then
-         if not _0x14[_0x17] then
-            _0x14[_0x17] = {Material = _0x17[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)], Reflectance = _0x17[_0x4F2A({56,77,74,76,77,75,84,73,76,75,77}, _0x7B)]}
+local function ApplyAntiLag()
+   for _, obj in pairs(workspace:GetDescendants()) do
+      if obj:IsA("BasePart") and not obj:IsA("Terrain") then
+         if not OriginalMaterials[obj] then
+            OriginalMaterials[obj] = {Material = obj.Material, Reflectance = obj.Reflectance}
          end
-         _0x17[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)] = Enum.Material.SmoothPlastic
-         _0x17[_0x4F2A({56,77,74,76,77,75,84,73,76,75,77}, _0x7B)] = 0
-      elseif _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({38,77,75,73,76}, _0x7B)) or _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({54,77,88,118,88,93,88,77}, _0x7B)) then
-         if not _0x14[_0x17] then
-            _0x14[_0x17] = {Transparency = _0x17[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)]}
+         obj.Material = Enum.Material.SmoothPlastic
+         obj.Reflectance = 0
+      elseif obj:IsA("Decal") or obj:IsA("Texture") then
+         if not OriginalMaterials[obj] then
+            OriginalMaterials[obj] = {Transparency = obj.Transparency}
          end
-         _0x17[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 1
+         obj.Transparency = 1
       end
    end
    
-   if workspace:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({54,77,88,88,73,73,76}, _0x7B)) then
-      local _0x18 = workspace:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({54,77,88,88,73,73,76}, _0x7B))
-      if not _0x14[_0x18] then
-         _0x14[_0x18] = {Decoration = _0x18[_0x4F2A({38,77,75,77,88,73,86,73,77,76}, _0x7B)]}
+   if workspace:FindFirstChildOfClass("Terrain") then
+      local terrain = workspace:FindFirstChildOfClass("Terrain")
+      if not OriginalMaterials[terrain] then
+         OriginalMaterials[terrain] = {Decoration = terrain.Decoration}
       end
-      _0x18[_0x4F2A({38,77,75,77,88,73,86,73,77,76}, _0x7B)] = false
+      terrain.Decoration = false
    end
    
-   game[_0x4F2A({46,73,79,74,76,73,76,79}, _0x7B)][_0x4F2A({39,78,77,74,73,76,57,74,73,76,87,85,89}, _0x7B)] = false
-   for _, _0x19 in pairs(game[_0x4F2A({46,73,79,74,76,73,76,79}, _0x7B)]:_0x4F2A({45,77,84,36,77,89,75,77,76,76,73,76,86,89}, _0x7B)()) do
-      if _0x19:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({50,77,89,84,37,78,78,77,75,84}, _0x7B)) or _0x19:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({34,76,77,77,73,37,78,78,77,75,84}, _0x7B)) or _0x19:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({34,76,93,88,37,78,78,77,75,84}, _0x7B)) or _0x19:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({57,83,76,50,73,83,89,37,78,78,77,75,84}, _0x7B)) or _0x19:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({35,77,76,77,88,35,77,88,88,73,75,86,73,77,76,37,78,78,77,75,84}, _0x7B)) then
-         if not _0x14[_0x19] then
-            _0x14[_0x19] = {Enabled = _0x19[_0x4F2A({37,76,73,74,76,77,76}, _0x7B)]}
+   game.Lighting.GlobalShadows = false
+   for _, effect in pairs(game.Lighting:GetDescendants()) do
+      if effect:IsA("PostEffect") or effect:IsA("BloomEffect") or effect:IsA("BlurEffect") or effect:IsA("SunRaysEffect") or effect:IsA("ColorCorrectionEffect") then
+         if not OriginalMaterials[effect] then
+            OriginalMaterials[effect] = {Enabled = effect.Enabled}
          end
-         _0x19[_0x4F2A({37,76,73,74,76,77,76}, _0x7B)] = false
+         effect.Enabled = false
       end
    end
 end
 
-local function _0x1A()
-   for _0x17, _0x1B in pairs(_0x14) do
-      if _0x17 and _0x17[_0x4F2A({33,76,77,88,76,77}, _0x7B)] then
+local function RestoreGraphics()
+   for obj, properties in pairs(OriginalMaterials) do
+      if obj and obj.Parent then
          pcall(function()
-            for _0x1C, _0x1D in pairs(_0x1B) do
-               _0x17[_0x1C] = _0x1D
+            for prop, value in pairs(properties) do
+               obj[prop] = value
             end
          end)
       end
    end
-   _0x14 = {}
-   game[_0x4F2A({46,73,79,74,76,73,76,79}, _0x7B)][_0x4F2A({39,78,77,74,73,76,57,74,73,76,87,85,89}, _0x7B)] = _0x15[_0x4F2A({39,78,77,74,73,76,57,74,73,76,87,85,89}, _0x7B)]
+   OriginalMaterials = {}
+   game.Lighting.GlobalShadows = OriginalLighting.GlobalShadows
 end
 
-workspace[_0x4F2A({38,77,89,75,77,76,76,73,76,86,33,76,76,77,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(function(_0x17)
-   if _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({33,76,84,73,44,73,79,54,77,79,79,78,77}, _0x7B)] and _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({33,76,84,73,44,73,79,54,77,79,79,78,77}, _0x7B)][_0x4F2A({41,93,88,88,77,76,84,54,73,74,93,77}, _0x7B)] then
-      task[_0x4F2A({89,73,73,84}, _0x7B)]()
+workspace.DescendantAdded:Connect(function(obj)
+   if Rayfield.Flags.AntiLagToggle and Rayfield.Flags.AntiLagToggle.CurrentValue then
+      task.wait()
       pcall(function()
-         if _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({34,73,89,77,50,73,88,86}, _0x7B)) and not _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({54,77,88,88,73,73,76}, _0x7B)) then
-            if not _0x14[_0x17] then _0x14[_0x17] = {Material = _0x17[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)], Reflectance = _0x17[_0x4F2A({56,77,74,76,77,75,84,73,76,75,77}, _0x7B)]} end
-            _0x17[_0x4F2A({47,73,84,77,88,73,73,76}, _0x7B)] = Enum.Material.SmoothPlastic
-            _0x17[_0x4F2A({56,77,74,76,77,75,84,73,76,75,77}, _0x7B)] = 0
-         elseif _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({38,77,75,73,76}, _0x7B)) or _0x17:_0x4F2A({43,89,33}, _0x7B)(_0x4F2A({54,77,88,118,88,93,88,77}, _0x7B)) then
-            if not _0x14[_0x17] then _0x14[_0x17] = {Transparency = _0x17[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)]} end
-            _0x17[_0x4F2A({54,88,73,76,89,88,73,88,77,76,75,83}, _0x7B)] = 1
+         if obj:IsA("BasePart") and not obj:IsA("Terrain") then
+            if not OriginalMaterials[obj] then OriginalMaterials[obj] = {Material = obj.Material, Reflectance = obj.Reflectance} end
+            obj.Material = Enum.Material.SmoothPlastic
+            obj.Reflectance = 0
+         elseif obj:IsA("Decal") or obj:IsA("Texture") then
+            if not OriginalMaterials[obj] then OriginalMaterials[obj] = {Transparency = obj.Transparency} end
+            obj.Transparency = 1
          end
       end)
    end
 end)
 
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({45,73,239,210,217,77,8,44,73,79}, _0x7B),
+MainTab:CreateToggle({
+   Name = "Giảm Lag",
    CurrentValue = false,
-   Flag = _0x4F2A({33,76,84,73,44,73,79,54,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      if _0x4 then _0x16() else _0x1A() end
-   end,
-})
-
-_G[_0x4F2A({43,76,78,42,77,85,88,37,76,73,74,76,77,76}, _0x7B)] = false
-_G[_0x4F2A({42,77,85,88,56,77,95,77,88,37,76,73,74,76,77,76}, _0x7B)] = false
-
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({42,77,85,88,80,77,95,77,88}, _0x7B),
-   CurrentValue = false,
-   Flag = _0x4F2A({42,77,85,88,56,77,95,77,88,54,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({42,77,85,88,56,77,95,77,88,37,76,73,74,76,77,76}, _0x7B)] = _0x4
-      local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-      if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B)) then
-         local _0x6 = _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B))
-         _0x6[_0x4F2A({55,89,77,42,77,85,88,56,77,95,77,88}, _0x7B)] = true
-         if _0x4 then _0x6[_0x4F2A({42,77,85,88,56,77,95,77,88}, _0x7B)] = 75 else _0x6[_0x4F2A({42,77,85,88,56,77,95,77,88}, _0x7B)] = 50 end
+   Flag = "AntiLagToggle",
+   Callback = function(Value)
+      if Value then
+         ApplyAntiLag()
+      else
+         RestoreGraphics()
       end
    end,
 })
 
-_0x3:_0x4F2A({105,90,77,103,92,77,62,77,79,79,78,77}, _0x7B)({
-   Name = _0x4F2A({43,76,78,42,77,85,88}, _0x7B),
+_G.InfJumpEnabled = false
+_G.JumpPowerEnabled = false
+
+MainTab:CreateToggle({
+   Name = "Jumppower",
    CurrentValue = false,
-   Flag = _0x4F2A({43,76,78,42,77,85,88,54,77,79,79,78,77}, _0x7B),
-   Callback = function(_0x4)
-      _G[_0x4F2A({43,76,78,42,77,85,88,37,76,73,74,76,77,76}, _0x7B)] = _0x4
+   Flag = "JumpPowerToggle",
+   Callback = function(Value)
+      _G.JumpPowerEnabled = Value
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+         humanoid.UseJumpPower = true
+         if Value then
+            humanoid.JumpPower = 75
+         else
+            humanoid.JumpPower = 50
+         end
+      end
    end,
 })
 
-game:_0x4F2A({45,77,84,57,77,88,88,73,75,77}, _0x7B)(_0x4F2A({53,89,77,74,43,76,88,85,76,57,77,88,88,73,75,77}, _0x7B))[_0x4F2A({42,77,85,88,50,73,89,85,77,89,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(function()
-   if _G[_0x4F2A({43,76,78,42,77,85,88,37,76,73,74,76,77,76}, _0x7B)] then
-      local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-      if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B)) then
-         _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B)):_0x4F2A({41,74,73,76,79,73,57,76,73,76,77}, _0x7B)(Enum.HumanoidStateType.Jumping)
+MainTab:CreateToggle({
+   Name = "InfJump",
+   CurrentValue = false,
+   Flag = "InfJumpToggle",
+   Callback = function(Value)
+      _G.InfJumpEnabled = Value
+   end,
+})
+
+game:GetService("UserInputService").JumpRequest:Connect(function()
+   if _G.InfJumpEnabled then
+      local Player = game.Players.LocalPlayer
+      if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+         Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
       end
    end
 end)
 
-task[_0x4F2A({89,88,73,93,76}, _0x7B)](function()
-   while task[_0x4F2A({89,73,73,84}, _0x7B)](0.2) do
-      if _G[_0x4F2A({42,77,85,88,56,77,95,77,88,37,76,73,74,76,77,76}, _0x7B)] then
+task.spawn(function()
+   while task.wait(0.2) do
+      if _G.JumpPowerEnabled then
          pcall(function()
-            local _0x5 = game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)]
-            if _0x5 and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)] and _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B)) then
-               local _0x6 = _0x5[_0x4F2A({41,74,73,88,73,73,92,77,88}, _0x7B)]:_0x4F2A({44,73,76,100,73,75,76,41,74,73,88,83,37,78,73,89,89}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B))
-               _0x6[_0x4F2A({55,89,77,42,77,85,88,56,77,95,77,88}, _0x7B)] = true
-               _0x6[_0x4F2A({42,77,85,88,56,77,95,77,88}, _0x7B)] = 75
+            local Player = game.Players.LocalPlayer
+            if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+               local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+               humanoid.UseJumpPower = true
+               humanoid.JumpPower = 75
             end
          end)
       end
    end
 end)
 
-game[_0x4F2A({58,78,73,83,77,90,89}, _0x7B)][_0x4F2A({38,77,73,73,106,78,73,83,77,90}, _0x7B)][_0x4F2A({41,74,73,88,73,73,92,77,88,33,76,76,77,76}, _0x7B)]:_0x4F2A({35,77,76,76,77,73,86}, _0x7B)(function(_0x0C)
-   local _0x6 = _0x0C:_0x4F2A({53,73,73,84,38,77,88,35,72,73,76,76}, _0x7B)(_0x4F2A({34,93,71,73,76,77,73,76}, _0x7B), 5)
-   if _0x6 then
-      task[_0x4F2A({89,73,73,84}, _0x7B)](0.5)
-      if _G[_0x4F2A({42,77,85,88,56,77,95,77,88,37,76,73,74,76,77,76}, _0x7B)] then
-         _0x6[_0x4F2A({55,89,77,42,77,85,88,56,77,95,77,88}, _0x7B)] = true
-         _0x6[_0x4F2A({42,77,85,88,56,77,95,77,88}, _0x7B)] = 75
+game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
+   local humanoid = char:WaitForChild("Humanoid", 5)
+   if humanoid then
+      task.wait(0.5)
+      if _G.JumpPowerEnabled then
+         humanoid.UseJumpPower = true
+         humanoid.JumpPower = 75
       end
-      if _G[_0x4F2A({57,90,77,77,76,47,76,73,74,76,77,76}, _0x7B)] and _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({57,88,77,77,76,57,78,73,76,77,88}, _0x7B)] then
-         _0x6[_0x4F2A({53,73,78,73,57,88,77,77,76}, _0x7B)] = _0x1[_0x4F2A({44,78,73,79,89}, _0x7B)][_0x4F2A({57,88,77,77,76,57,78,73,76,77,88}, _0x7B)][_0x4F2A({39,93,88,88,77,76,84,60,73,76,93,77}, _0x7B)]
+      if _G.SpeedEnabled and Rayfield.Flags.SpeedSlider then
+         humanoid.WalkSpeed = Rayfield.Flags.SpeedSlider.CurrentValue
       end
    end
 end)
 
-_0x1:_0x4F2A({102,77,86,73,76,81}, _0x7B)({
-   Title = _0x4F2A({38,71,73,76,72,73,77,76,74,79,72,87,70}, _0x7B),
-   Content = _0x4F2A({8,25,8}, _0x7B),
+Rayfield:Notify({
+   Title = "@manhkienbghub",
+   Content = ".!.",
    Duration = 5,
    Image = 4483362458,
 })
