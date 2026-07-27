@@ -102,6 +102,33 @@ MainTab:CreateToggle({
    end,
 })
 
+_G.AutoResetEnabled = false
+
+MainTab:CreateToggle({
+   Name = "Auto Reset",
+   CurrentValue = false,
+   Flag = "AutoResetToggle",
+   Callback = function(Value)
+      _G.AutoResetEnabled = Value
+   end,
+})
+
+task.spawn(function()
+   while task.wait(0.1) do
+      if _G.AutoResetEnabled then
+         pcall(function()
+            local Player = game.Players.LocalPlayer
+            if Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid") then
+               local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+               if humanoid.Health <= 4 and humanoid.Health > 0 then
+                  humanoid.Health = 0
+               end
+            end
+         end)
+      end
+   end
+end)
+
 task.spawn(function()
    while task.wait(0.5) do
       if _G.HitboxEnabled then
